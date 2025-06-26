@@ -5,10 +5,10 @@ import pandas as pd
 import json
 from fpdf import FPDF
 
-# 📁 Set your folder path
+# Setting the folder path
 PDF_FOLDER = r"E:\Toppersnotes\Candidate_Bio_Scraper\ToppersNotes_Biodata_PDFs"
 
-# 🎯 Target fields and regex patterns
+# Target fields and regex patterns
 regex_patterns = {
     "Name": r"Name\s*\|\s*(.+)",
     "Mobile No.": r"Mobile No\.:\s*\|\s*([0-9]{10})",
@@ -17,7 +17,7 @@ regex_patterns = {
     "Optional Subject": r"Optional Subject\s*\|\s*([A-Z &]+)"
 }
 
-# 📌 Extract from one PDF
+# Extract from one PDF
 def extract_details_from_pdf(pdf_path):
     data = {}
     with fitz.open(pdf_path) as doc:
@@ -27,7 +27,7 @@ def extract_details_from_pdf(pdf_path):
             data[field] = match.group(1).strip() if match else "Not found"
     return data
 
-# 📦 Collect data
+# Collecting data
 all_data = []
 for filename in os.listdir(PDF_FOLDER):
     if filename.lower().endswith(".pdf"):
@@ -35,15 +35,15 @@ for filename in os.listdir(PDF_FOLDER):
         extracted = extract_details_from_pdf(full_path)
         all_data.append(extracted)
 
-# ✅ Save as JSON
+# Save as JSON
 with open("output.json", "w") as jf:
     json.dump(all_data, jf, indent=4)
 
-# ✅ Save as CSV
+# Save as CSV
 df = pd.DataFrame(all_data)
 df.to_csv("output.csv", index=False)
 
-# ✅ Save as PDF summary
+# Save as PDF summary
 pdf = FPDF()
 pdf.set_auto_page_break(auto=True, margin=15)
 pdf.add_page()
@@ -58,4 +58,4 @@ for entry in all_data:
 
 pdf.output("output.pdf")
 
-print("✅ Data saved as output.json, output.csv, and output.pdf")
+print("Data saved as output.json, output.csv, and output.pdf")
