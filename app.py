@@ -29,11 +29,19 @@ def extract_details_from_pdf(pdf_path):
 
 # Collecting data
 all_data = []
-for filename in os.listdir(PDF_FOLDER):
-    if filename.lower().endswith(".pdf"):
-        full_path = os.path.join(PDF_FOLDER, filename)
-        extracted = extract_details_from_pdf(full_path)
-        all_data.append(extracted)
+# Sorted list of PDFs by modification time 
+pdf_files = [
+    os.path.join(PDF_FOLDER, f)
+    for f in os.listdir(PDF_FOLDER)
+    if f.lower().endswith(".pdf")
+]
+pdf_files.sort(key=os.path.getmtime) #oldest first
+
+# Extract details from each PDF in order
+for full_path in pdf_files:
+    extracted = extract_details_from_pdf(full_path)
+    all_data.append(extracted)
+
 
 # Save as JSON
 with open("output.json", "w") as jf:
