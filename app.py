@@ -62,7 +62,14 @@ for entry in all_data:
     pdf.ln(5)
     for key, value in entry.items():
         pdf.cell(200, 10, txt=f"{key}: {value}", ln=True)
-    pdf.ln(10)
+    pdf.ln(5)
+
+    # Divider: dashed line
+    pdf.set_draw_color(200, 200, 200)  # light gray
+    y = pdf.get_y()
+    pdf.line(10, y, 200, y)  # x1, y1, x2, y2
+    pdf.ln(5)
+
 
 pdf.output("output.pdf")
 
